@@ -1,8 +1,9 @@
 export interface PlayerData {
+    id?: number;
     nombre: string;
     apellido: string;
     posicion: string;
-    pais: string;
+    paisOrigen: string;
     estatura: string;
     peso: string;
 }

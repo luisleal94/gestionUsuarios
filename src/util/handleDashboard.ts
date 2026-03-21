@@ -1,4 +1,5 @@
-import insertPlatrayer from "../services/crudPlayers";
+import type { PlayerData } from "../interface/playerData";
+import {insertPlatrayer} from "../services/crudPlayers";
 
 export const handleForm = (setShowDiv: React.Dispatch<React.SetStateAction<boolean>>) => {
     setShowDiv(true);
@@ -13,21 +14,21 @@ export const guardaDatos = async (
     peso: string,
     setShowDiv: React.Dispatch<React.SetStateAction<boolean>>,
     setMensajePopup: React.Dispatch<React.SetStateAction<string>>
-) : Promise<boolean> => {
+) : Promise<PlayerData|null> => {
     if (!nombre.trim() || !apellido.trim() || !posicion.trim() || !pais.trim() || !estatura.trim() || !peso.trim()) {
         setMensajePopup('Por favor completa todos los campos');
-        return false;
+        return null;
     }
 
-    const playerInserted = await insertPlatrayer({nombre, apellido, posicion, pais, estatura, peso});
+    const playerInserted: PlayerData|null = await insertPlatrayer({nombre, apellido, posicion, paisOrigen: pais, estatura, peso});
 
     if (!playerInserted) {
         setMensajePopup('Error al agregar jugador');
-        return false;
+        return null;
     }
 
     setShowDiv(false);
-    return true;
+    return playerInserted;
 }
 
 export const cleanState = ( setNombre: React.Dispatch<React.SetStateAction<string>>, 
