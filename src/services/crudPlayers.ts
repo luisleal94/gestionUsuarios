@@ -30,7 +30,7 @@ export const getPlayers = async () => {
     return data as PlayerData[];
 }
 
-export const updatePlayer = async (id: number, playerData: PlayerData) : Promise<boolean> => {
+export const updatePlayer = async (id: number, playerData: PlayerData) : Promise<PlayerData|null> => {
     const { data, error } = await supabase
       .from('jugadoresFut')
       .update({
@@ -42,9 +42,9 @@ export const updatePlayer = async (id: number, playerData: PlayerData) : Promise
       .select();
     if (error) {
         console.error('Error updating player:', error);
-        return false;
+        return null;
     }
-    return true;
+    return data[0] as PlayerData;
 }
 
 export const deletePlayer = async (id: number) : Promise<boolean> => {

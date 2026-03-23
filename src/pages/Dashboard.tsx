@@ -6,7 +6,7 @@ import { Button} from "@headlessui/react";
 import { Popup } from "../components/Popup";
 import { TablePlayers } from "../components/TablePlayers";
 import type { PlayerData } from "../interface/playerData";
-import { deletePlayer, getPlayers } from "../services/crudPlayers";
+import { deletePlayer, getPlayers, updatePlayer } from "../services/crudPlayers";
 import { FormPlayer } from "../components/FormPlayer";
 
 const Dashboard = () => {
@@ -63,24 +63,48 @@ const Dashboard = () => {
       }
   }
   
-  const procesaDatos = async () => {
-    const datosGuardados : PlayerData|null =  await guardaDatos(nombre, apellido, posicion, pais, estatura, peso, setshowDiv, setmensajePopup);
-    if (datosGuardados!= null) {
-      if(  isEditing && editId !== null){
-        setUsers((prev) => prev.map((user) => user.id === editId ? { ...datosGuardados, id: editId } : user));
-        setmensajePopup('Jugador editado exitosamente');
-        setIsEditing(false);
-        setEditId(null);
-      } else {
-        setUsers((prev) => [...prev, datosGuardados]);
-        setmensajePopup('Jugador agregado exitosamente');
-      }
-      cleanState(setnombre, setapellido, setposicion, setpais, setestatura, setpeso);
-      setIsEditing(false);
-      setEditId(null);
+  
+const procesaDatos = async () => {
+  if (isEditing && editId !== null) {
+    const updatedPlayer: PlayerData | null = await updatePlayer(editId, {
+      id: editId,
+      nombre,
+      apellido,
+      posicion,
+      paisOrigen: pais,
+      estatura,
+      peso,
+    });
+
+    if (updatedPlayer) {
+      setUsers((prev) =>
+        prev.map((user) =>
+          user.id === editId ? updatedPlayer : user
+        )
+      );
+      setmensajePopup('Jugador actualizado exitosamente');
+    } else {
+      setmensajePopup('Error al actualizar el jugador');
     }
-    setPopup(true);
+  } else {
+    const datosGuardados: PlayerData | null = await guardaDatos(
+      nombre, apellido, posicion, pais, estatura, peso, setshowDiv, setmensajePopup
+    );
+
+    if (datosGuardados) {
+      setUsers((prev) => [...prev, datosGuardados]);
+      setmensajePopup('Jugador agregado exitosamente');
+    } else {
+      setmensajePopup('Error al agregar el jugador');
+    }
   }
+
+  cleanState(setnombre, setapellido, setposicion, setpais, setestatura, setpeso);
+  setIsEditing(false);
+  setEditId(null);
+  setPopup(true);
+  setshowDiv(false)
+};
 
   return (
     <>
