@@ -3,9 +3,10 @@ import type { PlayerData } from "../interface/playerData";
 interface TablePlayersProps {
     users: PlayerData[];
     elimina: (id: number) => void;
+    editar: (id: number) => void;
 }
 
-export const TablePlayers = ({ users, elimina }: TablePlayersProps) => {
+export const TablePlayers = ({ users, elimina, editar }: TablePlayersProps) => {
 
     return (
         <div className="overflow-x-auto bg-white rounded-xl shadow-md">
@@ -38,7 +39,7 @@ export const TablePlayers = ({ users, elimina }: TablePlayersProps) => {
                             <td className="px-6 py-4">{user.peso}</td>
                             <td className="px-6 py-4">
                                 <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
-                                    onClick={() => console.log(user.id||0)}
+                                    onClick={() => editar(user.id||0)}
                                 >
                                     Editar
                                 </button>

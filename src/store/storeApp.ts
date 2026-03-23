@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { signOut } from "../services/authService";
+import { persist } from "zustand/middleware";
 
 export type AppStore = {
   isLoggedIn: boolean;
@@ -9,23 +10,31 @@ export type AppStore = {
   logout: () => Promise<void>;
 };
 
-export const useAppStore = create<AppStore>((set) => ({
-  isLoggedIn: false,
-  username: "",
+export const useAppStore = create<AppStore>()(
+  persist(
+    (set) => ({
+      isLoggedIn: false,
+      username: "",
 
-  setLoggedIn: (loggedIn) => set({ isLoggedIn: loggedIn }),
-  setUsername: (username) => set({ username }),
-  logout: async () => {
-    try {
-      const result = await signOut  ();
-      if (result.success) {
-        set({ isLoggedIn: false, username: '' });
-        console.log('Logout exitoso');
-      } else {
-        console.error('Error en logout:', result.error);
-      }
-    } catch (error) {
-      console.error('Error en logout:', error);
+      setLoggedIn: (loggedIn) => set({ isLoggedIn: loggedIn }),
+      setUsername: (username) => set({ username }),
+
+      logout: async () => {
+        try {
+          const result = await signOut();
+          if (result.success) {
+            set({ isLoggedIn: false, username: "" });
+            console.log("Logout exitoso");
+          } else {
+            console.error("Error en logout:", result.error);
+          }
+        } catch (error) {
+          console.error("Error en logout:", error);
+        }
+      },
+    }),
+    {
+      name: "app-storage",
     }
-  },
-}));
+  )
+);

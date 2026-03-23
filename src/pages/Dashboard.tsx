@@ -21,6 +21,9 @@ const Dashboard = () => {
   const [pais, setpais] = useState('');
   const [estatura, setestatura] = useState('');
   const [peso, setpeso] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState<number | null>(null);
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -36,7 +39,18 @@ const Dashboard = () => {
   }, [])
 
   const handleEdit = (id: number) => {
-    console.log('Editar jugador con ID:', id);
+    const playerEdit : PlayerData | null = users.find((user) => user.id === id) || null;
+    if (playerEdit) {
+      setnombre(playerEdit.nombre);
+      setapellido(playerEdit.apellido);
+      setposicion(playerEdit.posicion);
+      setpais(playerEdit.paisOrigen);
+      setestatura(playerEdit.estatura);
+      setpeso(playerEdit.peso);
+      setEditId(id);
+      setIsEditing(true);
+      setshowDiv(true);
+    }
   };
 
   const handleDelete = async (id: number) => {
@@ -52,11 +66,20 @@ const Dashboard = () => {
   const procesaDatos = async () => {
     const datosGuardados : PlayerData|null =  await guardaDatos(nombre, apellido, posicion, pais, estatura, peso, setshowDiv, setmensajePopup);
     if (datosGuardados!= null) {
-      setUsers((prev) => [...prev, datosGuardados]);
-      setmensajePopup('Jugador agregado exitosamente');
+      if(  isEditing && editId !== null){
+        setUsers((prev) => prev.map((user) => user.id === editId ? { ...datosGuardados, id: editId } : user));
+        setmensajePopup('Jugador editado exitosamente');
+        setIsEditing(false);
+        setEditId(null);
+      } else {
+        setUsers((prev) => [...prev, datosGuardados]);
+        setmensajePopup('Jugador agregado exitosamente');
+      }
       cleanState(setnombre, setapellido, setposicion, setpais, setestatura, setpeso);
+      setIsEditing(false);
+      setEditId(null);
     }
-      setPopup(true);
+    setPopup(true);
   }
 
   return (
@@ -68,17 +91,22 @@ const Dashboard = () => {
         <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-semibold mb-4">Plantilla</h1>
         <div className="mb-4">
-          <Button onClick={() => setshowDiv(true)} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
+          <Button onClick={() => {setshowDiv(true); }} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
             Agregar Jugador
           </Button>
         </div>
         </div>
-        <TablePlayers users={users} elimina={handleDelete} />
+        <TablePlayers users={users} elimina={handleDelete} editar={handleEdit} />
         {showDiv && <FormPlayer 
-          setshowDiv={setshowDiv} setnombre={setnombre} 
-          setapellido={setapellido} setposicion={setposicion} 
-          setpais={setpais} setestatura={setestatura}
-          setpeso={setpeso} procesaDatos={procesaDatos}
+          setshowDiv={setshowDiv}
+          nombre={nombre} setnombre={setnombre}
+          apellido={apellido} setapellido={setapellido}
+          posicion={posicion} setposicion={setposicion}
+          pais={pais} setpais={setpais}
+          estatura={estatura} setestatura={setestatura}
+          peso={peso} setpeso={setpeso}
+          procesaDatos={procesaDatos}
+
         />}        
     </div>
     {popup && ( Popup({ setIsOpen: setPopup, mensaje: mensajePopup }))}

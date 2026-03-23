@@ -1,17 +1,34 @@
 import { Button } from "@headlessui/react";
+import type { PlayerData } from "../interface/playerData";
 
 interface FormPlayerProps {
-    setshowDiv: (show: boolean) => void;
-    setnombre: (nombre: string) => void;
-    setapellido: (apellido: string) => void;
-    setposicion: (posicion: string) => void;
-    setpais: (pais: string) => void;
-    setestatura: (estatura: string) => void;
-    setpeso: (peso: string) => void;
-    procesaDatos: () => void;
+  setshowDiv: (value: boolean) => void;
+  nombre: string;
+  setnombre: (value: string) => void;
+  apellido: string;
+  setapellido: (value: string) => void;
+  posicion: string;
+  setposicion: (value: string) => void;
+  pais: string;
+  setpais: (value: string) => void;
+  estatura: string;
+  setestatura: (value: string) => void;
+  peso: string;
+  setpeso: (value: string) => void;
+  procesaDatos: () => void;
+  datosEdit?: PlayerData | null;
 }
 
-export const FormPlayer = ({ setshowDiv, setnombre, setapellido, setposicion, setpais, setestatura, setpeso, procesaDatos }: FormPlayerProps) => {
+export const FormPlayer = ({
+  setshowDiv,
+  nombre, setnombre,
+  apellido, setapellido,
+  posicion, setposicion,
+  pais, setpais,
+  estatura, setestatura,
+  peso, setpeso,
+  procesaDatos
+ }: FormPlayerProps) => {
   return (
     <div className="flex items-center justify-center p-15 fixed inset-0 bg-black/50 z-50">
           <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8">
@@ -29,6 +46,7 @@ export const FormPlayer = ({ setshowDiv, setnombre, setapellido, setposicion, se
                   type="text"
                   className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   onChange={(e) => setnombre(e.target.value)}
+                  value={nombre}
                 />
               </div>
               <div>
@@ -39,6 +57,7 @@ export const FormPlayer = ({ setshowDiv, setnombre, setapellido, setposicion, se
                   type="text"
                   className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   onChange={(e) => setapellido(e.target.value)}
+                  value={apellido}
                 />
               </div>
               <div>
@@ -49,6 +68,7 @@ export const FormPlayer = ({ setshowDiv, setnombre, setapellido, setposicion, se
                   type="text"
                   className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   onChange={(e) => setposicion(e.target.value)}
+                  value={posicion}
 
                 />
               </div>
@@ -59,6 +79,7 @@ export const FormPlayer = ({ setshowDiv, setnombre, setapellido, setposicion, se
                 <select
                   className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   onChange={(e) => setpais(e.target.value)}
+                  value={pais}
                 >
                   <option>México</option>
                   <option>Estados Unidos</option>
@@ -73,6 +94,7 @@ export const FormPlayer = ({ setshowDiv, setnombre, setapellido, setposicion, se
                   type="text"
                   className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   onChange={(e) => setestatura(e.target.value)}
+                  value={estatura}
                 />
               </div>
               <div>
@@ -83,6 +105,7 @@ export const FormPlayer = ({ setshowDiv, setnombre, setapellido, setposicion, se
                   type="text"
                   className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   onChange={(e) => setpeso(e.target.value)}
+                  value={peso}
                 />
               </div>
 
