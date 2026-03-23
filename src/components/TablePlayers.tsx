@@ -9,7 +9,7 @@ interface TablePlayersProps {
 export const TablePlayers = ({ users, elimina, editar }: TablePlayersProps) => {
 
     return (
-        <div className="overflow-x-auto bg-white rounded-xl shadow-md">
+        <div className="overflow-x-auto bg-white rounded-xl shadow-md dark:bg-gray-700 dark:text-gray-100 transition-colors duration-500">
             <table className="min-w-full text-sm text-left">
 
                 <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
@@ -29,7 +29,7 @@ export const TablePlayers = ({ users, elimina, editar }: TablePlayersProps) => {
                     {users.map((user) => (
                         <tr
                             key={user.id}
-                            className="border-t hover:bg-gray-50 transition"
+                            className="border-t hover:bg-gray-50 transition dark:border-gray-600 dark:hover:bg-gray-600/50"
                         >
                             <td className="px-6 py-4">{user.nombre}</td>
                             <td className="px-6 py-4">{user.apellido}</td>
@@ -38,14 +38,14 @@ export const TablePlayers = ({ users, elimina, editar }: TablePlayersProps) => {
                             <td className="px-6 py-4">{user.estatura}</td>
                             <td className="px-6 py-4">{user.peso}</td>
                             <td className="px-6 py-4">
-                                <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                                <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition dark:bg-green-700 dark:hover:bg-green-800 dark:text-gray-300"
                                     onClick={() => editar(user.id||0)}
                                 >
                                     Editar
                                 </button>
                             </td>
                             <td className="px-6 py-4">
-                                <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                                <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition dark:bg-red-700 dark:hover:bg-red-800 dark:text-gray-300"
                                     onClick={() => elimina(user.id||0)}
                                 >
                                     Eliminar

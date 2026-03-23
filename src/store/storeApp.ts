@@ -8,6 +8,8 @@ export type AppStore = {
   setLoggedIn: (loggedIn: boolean) => void;
   setUsername: (username: string) => void;
   logout: () => Promise<void>;
+  modoOscuro: boolean;
+  toggleModoOscuro: () => void;
 };
 
 export const useAppStore = create<AppStore>()(
@@ -32,7 +34,18 @@ export const useAppStore = create<AppStore>()(
           console.error("Error en logout:", error);
         }
       },
-    }),
+      modoOscuro: false,
+      toggleModoOscuro: () =>
+        set((state) => {
+          const newMode = !state.modoOscuro;
+          if (newMode) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+          return { modoOscuro: newMode };
+        }),
+      }),
     {
       name: "app-storage",
     }

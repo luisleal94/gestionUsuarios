@@ -110,12 +110,13 @@ const procesaDatos = async () => {
     <>
       <Header toggleMenu={() => setIsOpen(!isOpen)} />
       <Sidebar isOpen={isOpen} />
-      <div className="p-6">
+      <div className="p-6  dark:bg-gray-800 dark:text-gray-100 min-h-screen transition-colors duration-500">
 
         <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-semibold mb-4">Plantilla</h1>
         <div className="mb-4">
-          <Button onClick={() => {setshowDiv(true); }} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
+          <Button onClick={() => {setshowDiv(true); }} className="bg-blue-500 text-white px-4 py-2 
+            rounded-lg hover:bg-blue-600 transition duration-200 dark:bg-blue-700 dark:hover:bg-blue-800 dark:text-gray-900">
             Agregar Jugador
           </Button>
         </div>
